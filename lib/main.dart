@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 void main() {
   runApp(const MyApp());
@@ -37,13 +40,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // we call this to reset the state of the widget and we must call it to reset the build function.
-      _counter++;
-    });
+  // void _incrementCounter() {
+  //   setState(() {
+  //     // we call this to reset the state of the widget and we must call it to reset the build function.
+  //     _counter++;
+  //   });
+  // }
+
+  double scaleSize(BuildContext context)
+  {
+    return MediaQuery.of(context).size.width * 0.005;
   }
 
   @override
@@ -51,49 +59,70 @@ class _MyHomePageState extends State<MyHomePage> {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 242, 201, 247),
       // the scaffold widget is the core of the entire app allowing ui elements like navigation menus
-      appBar: AppBar(
-        // the bar displayed at the top of the page
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the theme value from MyHomePage and use it to set a color based on our theme.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center takes a single child and positions it in the middle of the parent.
-        child: Padding(
-          // Padding give space around widgets.
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            // Column takes child widgets and arranges them vertically.
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const MyCustomWidget(text: 'Here is a box within a column'),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // Alignment for the boxes in the row.
-                children: [
-                  Expanded(child: MyCustomWidget(text: "here's a row")),
-                  Expanded(child: MyCustomWidget(text: "And the right side!")),
-                  // Expanded allows the widget to take up the entire space given even if the size changes.
+      body: mainMenuPage(context),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Center mainMenuPage(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Character Creator',
+            style: TextStyle(
+              fontSize: 15 * scaleSize(context),
+              decoration: TextDecoration.underline,
+              foreground: Paint()
+              ..shader = ui.Gradient.linear(
+                const Offset(0, 20),
+                const Offset(500, 20),
+                <Color>[
+                  Colors.blue,
+                  Colors.purple,
                 ],
               ),
-              const SizedBox(height: 50), // An invisible box to add spacing.
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20 * scaleSize(context), 5 * scaleSize(context), 20 * scaleSize(context), 1 * scaleSize(context)),
+            child: SizedBox(
+              child: TextField(
+                style: TextStyle(
+                  fontSize: 4 * scaleSize(context),
+                ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter your name here!',
+                  labelStyle: TextStyle(
+                    fontSize: 4 * scaleSize(context),
+                    //background: 
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 5 * scaleSize(context),),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(255, 223, 154, 214),
+            ),
+            onPressed:() => Placeholder(),
+            child: Padding(
+              padding: EdgeInsets.all(3 * scaleSize(context)),
+              child: Text(
+                "my text",
+                style: TextStyle(
+                  fontSize: 4 * scaleSize(context),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
